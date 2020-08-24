@@ -61,7 +61,7 @@ GO
 EXIT
 ```
 
-Finally, you will need to install the EF Core CLI on your local machine if you do not already have them installed
+Finally, you will need to install the EF Core CLI on your local machine if you do not already have it installed
 
 ```sql
 dotnet tool install --global dotnet-ef
