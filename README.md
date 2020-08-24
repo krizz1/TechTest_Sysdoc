@@ -101,7 +101,7 @@ make start-client
 For the following tasks please provide a solution to best of your ability, taking into account perforamance, best practices and scalability
 
 ### Task 1
-Currently the projects and the actions do not have a relationship between them. Please add a many to many relationship between the projects and the actionsso that an action can have multiple projects, and a project can have multiple actions. Then create a migration for the changes you implemented and update your database.
+Currently the projects and the actions do not have a relationship between them. Please add a many to many relationship between the projects and the actions so that an action can have multiple projects, and a project can have multiple actions. Then create a migration for the changes you implemented and update your database.
 
 ### Task 2
 
