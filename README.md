@@ -23,6 +23,7 @@ Clone this repo and create a new branch from `master` for each task. Once a task
 - [Docker](https://www.docker.com/products/overview)
 - [Node/NPM](https://nodejs.org/en/)
 - [Dotnet 3](https://dotnet.microsoft.com/download/dotnet-core/3.1)
+- [Make](http://gnuwin32.sourceforge.net/packages/make.htm) (if using Windows)
 - SQL Server (if not using Docker)
 
 ## Commands
@@ -37,7 +38,7 @@ Start the docker container
 
 ```zsh
 # Downloads a SQL server image and runs a container with a volume at the specified directory
-docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=MyPassword001" -v flight-path-db:${pwd}/volumes/database/data -p 1433:1433 --name sqlserver-test -d mcr.microsoft.com/mssql/server:2017-latest
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=MyPassword001" -p 1433:1433 --name sqlserver-test -d mcr.microsoft.com/mssql/server:2019-latest
 ```
 
 create a database, to enter the containers integrated terminal run
@@ -52,16 +53,30 @@ and then connect to SQL Server with
 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P MyPassword001
 ```
 
-Within SQLServer run
+once connected to SQL, run the following commands to create the database
 
 ```sql
 CREATE DATABASE TestAppDb
 GO
+EXIT
+```
+
+Finally, you will need to install the EF Core CLI on your local machine if you do not already have them installed
+
+```sql
+dotnet tool install --global dotnet-ef
 ```
 
 ---
 
 ### Start the application
+You can manually run all the makefile commands if you do not have make installed. All run commands can be found in the Makefile in the repository root.
+
+#### Run API Migrations & Seed DB
+
+```zsh
+make api-migrations
+```
 
 #### Start API (if not using any IDE)
 
@@ -86,8 +101,7 @@ make start-client
 For the following tasks please provide a solution to best of your ability, taking into account perforamance, best practices and scalability
 
 ### Task 1
-
-Currently the projects and the actions do not have a relationship between them. Please add a many to many relationship between the projects and the actions, so that an action can have multiple projects and a project can have multiple actions. Then create a migration for the changes you implemented and update your database.
+Currently the projects and the actions do not have a relationship between them. Please add a many to many relationship between the projects and the actionsso that an action can have multiple projects, and a project can have multiple actions. Then create a migration for the changes you implemented and update your database.
 
 ### Task 2
 

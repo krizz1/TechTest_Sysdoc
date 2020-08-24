@@ -1,8 +1,11 @@
 install:
-	npm install --prefix ./client
+	cd client && npm install
 
 start-client:
-	npm run start --prefix ./client
+	cd client && npm run start
+
+api-migrations:
+	dotnet ef database update -p api/TestApi/TestApi
 
 start-api:
 	dotnet run -p api/TestApi/TestApi
