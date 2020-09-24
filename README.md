@@ -1,4 +1,4 @@
-# Tech Lead coding exercise - Sysdoc Product Hub
+# Technical Exercise - Sysdoc Product Hub
 
 Change management programmes design and execute the communications and interactions an organisation has with employees whilst going through a change program. A change program could be anything from implementing a new enterprise wide IT system to changing employee work hours.
 
