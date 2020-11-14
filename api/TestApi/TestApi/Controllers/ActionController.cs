@@ -17,7 +17,7 @@ namespace TestApi.Controllers
         }
 
         [HttpGet("{actionId}")]
-        public async Task<ActionResult> GetProject([FromRoute] int actionId)
+        public async Task<ActionResult> GetAction([FromRoute] int actionId)
         {
             if (actionId == 0)
                 return BadRequest();
@@ -27,6 +27,19 @@ namespace TestApi.Controllers
                 return Ok(await _actionLogic.GetById(actionId));
             }
             catch(KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetActions()
+        {
+            try
+            {
+                return Ok(await _actionLogic.GetAll());
+            }
+            catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
