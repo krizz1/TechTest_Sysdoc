@@ -1,20 +1,52 @@
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using TestApi.Logic;
 
 namespace TestApi.Controllers
 {
-    [Route("api/projects")]
+    [Route("api/{version:apiVersion}/project")]
     [ApiController]
     public class ProjectController:Controller
     {
-        [HttpGet("test")]
-        public async Task<ActionResult<object>> Get()
+        private readonly IProjectLogic _projectLogic;
+
+        public ProjectController(IProjectLogic projectLogic)
         {
-            return new 
+            _projectLogic = projectLogic;
+        }
+
+        [HttpGet("{projectId}")]
+        public async Task<ActionResult> GetProject([FromRoute] int projectId)
+        {
+            if (projectId == 0)
+                return BadRequest();
+
+            try
             {
-                message = "Hello world"
-            };
+                return Ok(await _projectLogic.GetById(projectId));
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPatch("{projectId}/AssignAction/{actionId}")]
+        public async Task<ActionResult> AssignProjectAction([FromRoute] int projectId, [FromRoute] int actionId)
+        {
+            if (projectId == 0 || actionId == 0)
+                return BadRequest();
+
+            try
+            {
+                await _projectLogic.AddActionToProject(projectId, actionId);
+                return Ok();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

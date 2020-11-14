@@ -39,5 +39,10 @@ namespace TestApi.Data.Repositories
         {
             return await _entities.FindAsync(Id);
         }
+
+        public async Task SaveChanges()
+        {
+            await context.SaveChangesAsync();
+        }
     }
 }

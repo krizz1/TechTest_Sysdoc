@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using TestApi.Data;
 using TestApi.Data.Repositories;
+using TestApi.Logic;
 
 namespace TestApi
 {
@@ -30,7 +32,6 @@ namespace TestApi
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
 
             services.Configure<ForwardedHeadersOptions>(options =>
@@ -52,10 +53,23 @@ namespace TestApi
                         .AllowAnyHeader());
             });
 
+            services.AddHealthChecks();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IActionRepository, ActionRepository>();
+            services.AddScoped<IProjectActionRepository, ProjectActionRepository>();
 
+            services.AddScoped<IProjectLogic, Projectlogic>();
+            services.AddScoped<IActionLogic, ActionLogic>();
+
+            services.AddApiVersioning(v => {
+                v.ReportApiVersions = true;
+                v.AssumeDefaultVersionWhenUnspecified = true;
+                v.DefaultApiVersion = new ApiVersion(1, 0);
+            });
+
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,6 +87,14 @@ namespace TestApi
 
             app.UseRouting();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            app.UseHealthChecks("/health");
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sysdoc Tech Test V1");
+            });
         }
     }
 }
