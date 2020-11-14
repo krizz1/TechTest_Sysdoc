@@ -4,23 +4,23 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TestApi;
+using TestApi.Data;
 
-namespace TestApi.Migrations
+namespace TestApi.Data.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
-    [Migration("20200820122834_AddSeedData")]
-    partial class AddSeedData
+    [DbContext(typeof(SysdocContext))]
+    [Migration("20201113235859_AddProjectActions_CB")]
+    partial class AddProjectActions_CB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.7")
+                .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("TestApi.Entities.Action", b =>
+            modelBuilder.Entity("TestApi.Data.Models.Action", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -78,7 +78,7 @@ namespace TestApi.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TestApi.Entities.Project", b =>
+            modelBuilder.Entity("TestApi.Data.Models.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -113,6 +113,36 @@ namespace TestApi.Migrations
                             Name = "ERP",
                             ProgressStatus = 1
                         });
+                });
+
+            modelBuilder.Entity("TestApi.Data.Models.ProjectAction", b =>
+                {
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ActionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProjectId", "ActionId");
+
+                    b.HasIndex("ActionId");
+
+                    b.ToTable("ProjectAction");
+                });
+
+            modelBuilder.Entity("TestApi.Data.Models.ProjectAction", b =>
+                {
+                    b.HasOne("TestApi.Data.Models.Action", "Action")
+                        .WithMany("ProjectActions")
+                        .HasForeignKey("ActionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TestApi.Data.Models.Project", "Project")
+                        .WithMany("ProjectActions")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

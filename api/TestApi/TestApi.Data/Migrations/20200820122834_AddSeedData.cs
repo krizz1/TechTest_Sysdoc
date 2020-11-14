@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TestApi.Migrations
+namespace TestApi.Data.Migrations
 {
     public partial class AddSeedData : Migration
     {

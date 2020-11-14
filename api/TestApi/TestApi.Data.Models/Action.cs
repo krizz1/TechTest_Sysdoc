@@ -1,8 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using TestApi.Entities.Enums;
 
-namespace TestApi.Entities
+namespace TestApi.Data.Models
 {
     public class Action
     {
@@ -12,5 +12,6 @@ namespace TestApi.Entities
         public String Description { get; set; }
         public RagStatus RagStatus { get; set; }
         public ProgressStatus ProgressStatus { get; set; }
+        public ICollection<ProjectAction> ProjectActions { get; set; }
     }
 }
