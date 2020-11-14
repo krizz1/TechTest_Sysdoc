@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestApi;
 
-namespace TestApi.Migrations
+namespace TestApi.Data.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
-    [Migration("20200820120347_CreateInitialTables")]
-    partial class CreateInitialTables
+    [DbContext(typeof(SysdocContext))]
+    [Migration("20200820122834_AddSeedData")]
+    partial class AddSeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,6 +42,40 @@ namespace TestApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Actions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "New set of documentation has been packed and need to be delivered",
+                            Name = "Deliver packages",
+                            ProgressStatus = 2,
+                            RagStatus = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Train team for the newly defined process of delivering a project",
+                            Name = "Implement new process",
+                            ProgressStatus = 1,
+                            RagStatus = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Acquire new equipment in the office to further help employees with their work",
+                            Name = "Get new equipment",
+                            ProgressStatus = 0,
+                            RagStatus = 0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Go over old equipment to see what equipment is out of order",
+                            Name = "Re-assess old equipment",
+                            ProgressStatus = 0,
+                            RagStatus = 0
+                        });
                 });
 
             modelBuilder.Entity("TestApi.Entities.Project", b =>
@@ -63,6 +97,22 @@ namespace TestApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Projects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "",
+                            Name = "Unify",
+                            ProgressStatus = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "",
+                            Name = "ERP",
+                            ProgressStatus = 1
+                        });
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,4 @@
-namespace TestApi.Entities.Enums
+namespace TestApi.Data.Models
 {
     public enum RagStatus
     {

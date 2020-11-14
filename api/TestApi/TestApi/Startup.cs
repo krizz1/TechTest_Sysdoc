@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using TestApi.Data;
+using TestApi.Data.Repositories;
 
 namespace TestApi
 {
@@ -36,12 +38,10 @@ namespace TestApi
                 options.ForwardedHeaders =
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
-            
-            
-            services.AddDbContext<AppDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"));
-            });
+
+            services.AddDbContext<SysdocContext>(options =>
+                options.UseSqlServer(Configuration["Sysdoc-ConnectionString"]));
+
             services.AddCors(options =>
             {
                 // This CORS policy is fully open for testing purposes.
@@ -52,6 +52,10 @@ namespace TestApi
                         .AllowAnyHeader());
             });
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IActionRepository, ActionRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,10 +65,8 @@ namespace TestApi
             {
                 app.UseDeveloperExceptionPage();
             }
-            
-            
+                        
             app.UseCors(corsPolicyName);
-
 
             app.UseForwardedHeaders();
             app.UseHttpsRedirection();
