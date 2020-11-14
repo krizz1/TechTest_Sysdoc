@@ -5,7 +5,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
       <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.10" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.2.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.10" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.10">
         <PrivateAssets>all</PrivateAssets>
@@ -14,10 +16,13 @@
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.10" />
       <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.10" />
       <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\TestApi.Data\TestApi.Data.csproj" />
+      <ProjectReference Include="..\TestApi.Domain\TestApi.Domain.csproj" />
+      <ProjectReference Include="..\TestApi.Logic\TestApi.Logic.csproj" />
     </ItemGroup>
 
 </Project>

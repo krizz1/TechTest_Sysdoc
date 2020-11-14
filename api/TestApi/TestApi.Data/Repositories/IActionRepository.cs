@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using TestApi.Data.Models;
 
 namespace TestApi.Data.Repositories
 {
-    public interface IActionRepository
+    public interface IActionRepository : IRepository<Action>
     {
+        Task<IEnumerable<Action>> GetByProjectId(int projectId);
     }
 }
