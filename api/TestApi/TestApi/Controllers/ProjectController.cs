@@ -32,6 +32,19 @@ namespace TestApi.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<ActionResult> GetProjects()
+        {
+            try
+            {
+                return Ok(await _projectLogic.GetAll());
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
         [HttpPatch("{projectId}/AssignAction/{actionId}")]
         public async Task<ActionResult> AssignProjectAction([FromRoute] int projectId, [FromRoute] int actionId)
         {

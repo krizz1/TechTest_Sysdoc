@@ -17,6 +17,6 @@ namespace TestApi.Data
 
         public DbSet<Project> Projects { get; set; }
         public DbSet<Action> Actions { get; set; }
-        public DbSet<ProjectAction> ProjectActions { get; set; }
+        public DbSet<ProjectAction> ProjectAction { get; set; }
     }
 }
