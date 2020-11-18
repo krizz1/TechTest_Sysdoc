@@ -6,10 +6,6 @@ interface ProjectRowProps {
 }
 
 class ProjectRow extends React.Component<ProjectRowProps> {
-  constructor(props: ProjectRowProps) {
-    super(props);
-  }
-
   render() {
     const project = this.props.project;
 

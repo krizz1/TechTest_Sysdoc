@@ -7,10 +7,6 @@ interface ProjectTableProps {
 }
 
 class ProjectTable extends React.Component<ProjectTableProps> {
-  constructor(props: ProjectTableProps) {
-    super(props);
-  }
-
   render() {
     const projects = this.props.projects;
 
