@@ -2,6 +2,7 @@ import React from 'react';
 import {GetProjects} from './services/DataService';
 import Mappers from './services/Mappers';
 import ProjectTable from './components/projects/projecttable';
+import Loading from './components/loading/loading';
 
 class Projects  extends React.Component{
 
@@ -32,13 +33,16 @@ class Projects  extends React.Component{
   render()
   {
     const { isLoading, projectData, error } = this.state;
-
-
-
     if (error) return "Error loading Projects";
-    return isLoading ? "Loading..." : <ProjectTable projects={projectData} />
-  }
 
+    return (
+      <>
+        <h1>Projects</h1>
+        {isLoading && <Loading />}
+        {!isLoading && <ProjectTable projects={projectData} />}
+      </>
+    )
+  }
 }
 
 export default Projects;
