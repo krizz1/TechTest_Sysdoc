@@ -4,7 +4,8 @@ import ProjectRow from './projectrow';
 import Table from 'react-bootstrap/Table';
 
 interface ProjectTableProps {
-  projects: IProjectModel[]
+  projects: IProjectModel[],
+  rowClickHandler: (id: number) => void
 }
 
 class ProjectTable extends React.Component<ProjectTableProps> {
@@ -14,14 +15,17 @@ class ProjectTable extends React.Component<ProjectTableProps> {
     return (
         <Table striped bordered hover>
           <thead>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Status</th>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Project Status</th>
+              <th></th>
+            </tr>
           </thead>
           <tbody>
            
-          {projects.map((project:IProjectModel) => (
-            <ProjectRow project={project} />
+          {projects.map((project:IProjectModel, index: number) => (
+            <ProjectRow key={index} project={project} rowClickHandler={(id:number) => this.props.rowClickHandler(id)} />
           ))}
           </tbody>
         </Table>

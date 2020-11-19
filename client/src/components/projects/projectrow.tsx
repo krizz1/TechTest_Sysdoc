@@ -2,10 +2,17 @@ import React from 'react';
 import IProjectModel from '../../models/interfaces/IProjectModel';
 
 interface ProjectRowProps {
-  project: IProjectModel
+  project: IProjectModel,
+  rowClickHandler: ( id: number) => void
 }
 
 class ProjectRow extends React.Component<ProjectRowProps> {
+
+helloWorld = (id:number) =>
+{
+    this.props.rowClickHandler(id);
+}
+
   render() {
     const project = this.props.project;
 
@@ -14,6 +21,7 @@ class ProjectRow extends React.Component<ProjectRowProps> {
         <td>{project.name}</td>
         <td>{project.description}</td>
         <td>{project.progressStatus.description}</td>
+        <td><button className="btn btn-primary" onClick={() => this.props.rowClickHandler(project.id)}>Show actions</button></td>
       </tr>
     )
   }

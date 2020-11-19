@@ -1,8 +1,9 @@
 import React from 'react';
-import {GetProjects} from './services/DataService';
-import Mappers from './services/Mappers';
-import ProjectTable from './components/projects/projecttable';
-import Loading from './components/loading/loading';
+import {GetProject} from '../services/DataService';
+import Mappers from '../services/Mappers';
+import ProjectTable from '../components/projects/projecttable';
+import Loading from '../components/loading/loading';
+import {Row, Col} from 'react-bootstrap';
 
 class Projects  extends React.Component{
 
@@ -21,7 +22,7 @@ class Projects  extends React.Component{
   {
     try {
       this.setState({isLoading: true});
-      const projectData = Mappers.MapToProductModels(await GetProjects());
+      const projectData = Mappers.MapToProductModels(await GetProject(1));
       this.setState({projectData});
     } catch(e) {
       this.setState({error: e});
@@ -38,8 +39,13 @@ class Projects  extends React.Component{
     return (
       <>
         <h1>Projects</h1>
-        {isLoading && <Loading />}
-        {!isLoading && <ProjectTable projects={projectData} />}
+        <Row>
+          <Col md={12}>
+            {isLoading && <Loading />}
+            {!isLoading && <ProjectTable projects={projectData} rowClickHandler={() => null} />}
+          </Col>
+        </Row>
+        
       </>
     )
   }
