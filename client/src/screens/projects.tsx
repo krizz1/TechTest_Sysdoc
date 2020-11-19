@@ -1,23 +1,47 @@
 import React from 'react';
-import {GetProjects} from '../services/DataService';
-import Mappers from '../services/Mappers';
-import ProjectTable from '../components/projects/projecttable';
-import ActionTable from '../components/actions/actiontable';
-import Loading from '../components/loading/loading';
 import {Row, Col} from 'react-bootstrap';
+
+import {GetProjects,GetActions,AddActionToProject,RemoveActionFromProject} from '../services/DataService';
+import Mappers from '../services/Mappers';
+
 import IProjectModel from '../models/interfaces/IProjectModel';
 import IActionModel from '../models/interfaces/IActionModel';
 
-class Projects  extends React.Component{
+import ProjectTable from '../components/projects/projecttable';
+import ActionTable from '../components/actions/actiontable';
+import ManageProjectActionTable from '../components/actions/manageprojectactiontable';
+import Loading from '../components/loading/loading';
 
-  state = {
-    projectData: [],
-    actionData: [],
-    actionHeading: '',
-    isLoading: true,
-    error: null,
+interface IState {
+  projectData: IProjectModel[],
+  actionData: IActionModel[],
+  addActionData: IActionModel[],
+  actionHeading: string,
+  addActionHeading: string,
+  isLoadingProjects: boolean,
+  isLoadingActions: boolean,
+  error: null,
+  editingProjectId: number
+}
 
-  };
+class Projects extends React.Component<IState> {
+  state: IState;
+
+  constructor(props: IState){
+    super(props);
+
+    this.state = {
+      projectData: new Array<IProjectModel>(),
+      actionData: new Array<IActionModel>(),
+      addActionData: new Array<IActionModel>(),
+      actionHeading: '',
+      addActionHeading: '',
+      isLoadingProjects: true,
+      isLoadingActions: true,
+      error: null,
+      editingProjectId: 0
+    };
+  }
 
   componentDidMount()
   {
@@ -27,26 +51,71 @@ class Projects  extends React.Component{
   async LoadProjects()
   {
     try {
-      this.setState({isLoading: true});
-      const projectData = Mappers.MapToProductModels(await GetProjects());
-      this.setState({projectData});
+      this.setState({isLoadingProjects: true});
+      await this.loadProjectData();
     } catch(e) {
       this.setState({error: e});
     } finally {
-      this.setState({isLoading: false});
+      this.setState({isLoadingProjects: false});
     }
   }
 
-  showProjectActions = (id:number) => {
-    let project:IProjectModel = this.state.projectData.find(x => x['id'] === id)!;
+  async LoadActions()
+  {
+    try {
+      this.setState({isLoadingActions: true});
+      const actionData = Mappers.MapToActionModels(await GetActions());
+      this.setState({addActionData: actionData});
+    } catch(e) {
+      this.setState({error: e});
+    } finally {
+      this.setState({isLoadingActions: false});
+    }
+  }
+
+  showProjectActions = (projectId:number) => {
+    this.setState({addActionData: new Array<IActionModel>()});
+    let project:IProjectModel = this.getProject(projectId);
     let actions:IActionModel[] = project != null ? project.actions : [];
     this.setState({actionHeading: (project != null ? project.name : '')});
     this.setState({actionData: actions});
   }
 
+  showAddProjectActions = (projectId:number) => {
+    this.setState({actionData: new Array<IActionModel>()});
+    this.setState({actionHeading: ''});
+
+    this.setState({editingProjectId: projectId});
+
+    let project:IProjectModel = this.getProject(projectId);
+    this.setState({addActionHeading: (project != null ? project.name : '')});
+    this.LoadActions();
+  }
+
+  getProject(projectId:number){
+    return this.state.projectData.find(x => x.id === projectId)!
+  }
+
+  async loadProjectData(){
+    const projectData = Mappers.MapToProductModels(await GetProjects());
+    this.setState({projectData});
+  }
+
+  async addActionToProject(actionId:number) {
+      await AddActionToProject(this.state.editingProjectId,actionId);
+      await this.LoadActions();
+      await this.loadProjectData();
+  }
+
+  async removeActionFromProject(actionId:number) {
+    await RemoveActionFromProject(this.state.editingProjectId,actionId);
+    await this.LoadActions();
+    await this.loadProjectData();
+}
+
   render()
   {
-    const { isLoading, projectData, error } = this.state;
+    const { isLoadingProjects, projectData, actionData, error, actionHeading, addActionData, addActionHeading, editingProjectId } = this.state;
     if (error) return "Error loading Projects";
 
     return (
@@ -56,18 +125,30 @@ class Projects  extends React.Component{
         </Row>
         <Row>
           <Col md={12}>
-            {isLoading && <Loading />}
-            {!isLoading && <ProjectTable projects={projectData} rowClickHandler={(id:number) => this.showProjectActions(id)} />}
+            {isLoadingProjects && <Loading />}
+            {!isLoadingProjects && <ProjectTable projects={projectData} showActionsHandler={(id:number) => this.showProjectActions(id)} addActionsHandler={(id:number) => this.showAddProjectActions(id)} />}
           </Col>
         </Row>
         <Row>
-        <Col>{this.state.actionHeading !== '' && <h2>Actions for project: {this.state.actionHeading}</h2>}</Col>
+          <Col>{actionHeading !== '' && <h2>Actions for project: {actionHeading}</h2>}</Col>
         </Row>
         <Row>
           <Col>
-            {this.state.actionData.length === 0 && this.state.actionHeading === '' && <div>Select a project to view action data...</div>}
-            {this.state.actionData.length === 0 && this.state.actionHeading !== '' && <div>No actions assigned to this project.</div>}
-            {this.state.actionData.length > 0 && (<ActionTable actions={this.state.actionData} showAssignedProjects={false}></ActionTable>)}
+            {actionData.length === 0 && actionHeading !== '' && <div>No actions assigned to this project.</div>}
+            {actionData.length > 0 && (<ActionTable actions={actionData} showAssignedProjects={false}></ActionTable>)}
+          </Col>
+        </Row>
+        <Row>
+          <Col>{addActionData.length > 0 && <h2>Manage Actions for project: {addActionHeading}</h2>}</Col>
+        </Row>
+        <Row>
+          <Col>
+            {addActionData.length > 0 && (
+              <ManageProjectActionTable
+                actions={addActionData}
+                projectId={editingProjectId}
+                addActionToProjectHandler={(id) => this.addActionToProject(id)} 
+                removeActionFromProjectHandler={(id) => this.removeActionFromProject(id)} />)}
           </Col>
         </Row>
       </>

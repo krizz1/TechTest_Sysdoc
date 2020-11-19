@@ -1,17 +1,32 @@
 import React from 'react';
-import {GetActions} from '../services/DataService';
-import Mappers from '../services/Mappers';
-import ActionTable from '../components/actions/actiontable';
-import Loading from '../components/loading/loading';
 import {Row, Col} from 'react-bootstrap';
 
-class Actions  extends React.Component{
+import {GetActions} from '../services/DataService';
+import Mappers from '../services/Mappers';
 
-  state = {
-    actionData: [],
-    isLoading: true,
-    error: null
-  };
+import IActionModel from '../models/interfaces/IActionModel';
+
+import ActionTable from '../components/actions/actiontable';
+import Loading from '../components/loading/loading';
+
+interface IState {
+  actionData: IActionModel[],
+  isLoading: boolean,
+  error: null
+}
+
+class Actions extends React.Component<IState> {
+  state: IState;
+
+  constructor(props: IState){
+    super(props);
+
+    this.state = {
+      actionData: new Array<IActionModel>(),
+      isLoading: true,
+      error: null
+    };
+  }
 
   componentDidMount()
   {

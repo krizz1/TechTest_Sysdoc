@@ -20,9 +20,14 @@ export async function  GetActions()
   return await getData(`${baseUrl}action`);
 }
 
-export async function  AddActionToProject(projectId:number, actionId:number)
+export async function AddActionToProject(projectId:number, actionId:number)
 { 
-  return await postData(`${baseUrl}project/${projectId}/assignaction/${actionId}`);
+  return await patchData(`${baseUrl}project/${projectId}/assignaction/${actionId}`);
+}
+
+export async function RemoveActionFromProject(projectId:number, actionId:number)
+{ 
+  return await deteleData(`${baseUrl}project/${projectId}/unassignaction/${actionId}`);
 }
 
 async function getData(url:string)
@@ -40,11 +45,26 @@ async function getData(url:string)
   .catch(e => console.error('An issue occurred loading data:', e));
 }
 
-async function postData(url:string)
+async function patchData(url:string)
 {
   return await fetch(url,
     {
-      method: 'POST',
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  )
+  .then(async response => await response.json())
+  .then(data => { return data; })
+  .catch(e => console.error('An issue occurred loading data:', e));
+}
+
+async function deteleData(url:string)
+{
+  return await fetch(url,
+    {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       }

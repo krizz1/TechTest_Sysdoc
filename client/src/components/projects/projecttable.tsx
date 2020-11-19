@@ -5,7 +5,8 @@ import Table from 'react-bootstrap/Table';
 
 interface ProjectTableProps {
   projects: IProjectModel[],
-  rowClickHandler: (id: number) => void
+  showActionsHandler: (id: number) => void,
+  addActionsHandler: ( id: number) => void
 }
 
 class ProjectTable extends React.Component<ProjectTableProps> {
@@ -25,7 +26,11 @@ class ProjectTable extends React.Component<ProjectTableProps> {
           <tbody>
            
           {projects.map((project:IProjectModel, index: number) => (
-            <ProjectRow key={index} project={project} rowClickHandler={(id:number) => this.props.rowClickHandler(id)} />
+            <ProjectRow
+              key={index} 
+              project={project} 
+              showActionsHandler={(id:number) => this.props.showActionsHandler(id)} 
+              addActionsHandler={(id:number) => this.props.addActionsHandler(id)} />
           ))}
           </tbody>
         </Table>
