@@ -61,5 +61,22 @@ namespace TestApi.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpDelete("{projectId}/UnassignAction/{actionId}")]
+        public async Task<ActionResult> UnassignProjectAction([FromRoute] int projectId, [FromRoute] int actionId)
+        {
+            if (projectId == 0 || actionId == 0)
+                return BadRequest();
+
+            try
+            {
+                await _projectLogic.RemoveActionFromProject(projectId, actionId);
+                return Ok();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
     }
 }

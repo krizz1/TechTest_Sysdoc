@@ -48,6 +48,25 @@ namespace TestApi.Logic
             await _unitOfWork.SaveChanges();
         }
 
+        public async Task RemoveActionFromProject(int projectId, int actionId)
+        {
+            var project = await _unitOfWork.Projects.GetById(projectId);
+
+            PkCheck<Data.Models.Project>(project, projectId);
+
+            var action = await _unitOfWork.Actions.GetById(actionId);
+
+            PkCheck<Data.Models.Action>(action, actionId);
+
+            var projectAction = await _unitOfWork.ProjectActions.GetByIds(projectId, actionId);
+
+            if(projectAction != null)
+            {
+                _unitOfWork.ProjectActions.Delete(projectAction);
+                await _unitOfWork.SaveChanges();
+            }
+        }
+
         #region Internal Functions
 
         private void PkCheck<T>(T input, int id)

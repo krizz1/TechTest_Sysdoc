@@ -11,5 +11,7 @@ namespace TestApi.Logic
         Task<IEnumerable<Project>> GetAll();
 
         Task AddActionToProject(int projectId, int actionId);
+
+        Task RemoveActionFromProject(int projectId, int actionId);
     }
 }
