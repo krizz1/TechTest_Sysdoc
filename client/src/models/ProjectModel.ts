@@ -11,10 +11,10 @@ export default class ProjectModel implements IProjectModel {
 
   constructor(_id:number, _name:string, _description:string, _progressStatus:IProgressStatusModel, _actions:IActionModel[])
   {
-      this.id = _id;
-      this.name = _name;
-      this.description = _description;
-      this.progressStatus = _progressStatus;
-      this.actions = _actions;
+    this.id = _id;
+    this.name = _name;
+    this.description = _description;
+    this.progressStatus = _progressStatus;
+    this.actions = _actions;
   }
 }

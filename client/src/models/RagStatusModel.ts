@@ -6,8 +6,8 @@ export default class RagStatusModel implements IRagStatusModel {
 
   constructor(_id:number,  _description:string)
   {
-      this.id = _id;
-      this.description = _description;
+    this.id = _id;
+    this.description = _description;
   }
 }
 

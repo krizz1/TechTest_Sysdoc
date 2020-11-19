@@ -60,7 +60,6 @@ class Actions extends React.Component<IState> {
             {!isLoading && <ActionTable actions={actionData} showAssignedProjects={true} />}
           </Col>
         </Row>
-        
       </>
     )
   }

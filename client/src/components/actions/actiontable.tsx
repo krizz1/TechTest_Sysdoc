@@ -13,22 +13,22 @@ class ActionTable extends React.Component<ActionTableProps> {
     const actions = this.props.actions;
 
     return (
-        <Table striped bordered hover>
-          <thead>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Action Status</th>
-            <th>Rag Status</th>
-            {this.props.showAssignedProjects && <th>Assigned to Projects</th>} 
-          </thead>
-          <tbody>
-           
-          {actions.map((action:IActionModel) => (
-            <ActionRow action={action} showAssignedProjects={this.props.showAssignedProjects} />
-          ))}
-          </tbody>
-        </Table>
-      )
+      <Table striped bordered hover>
+        <thead>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Action Status</th>
+          <th>Rag Status</th>
+          {this.props.showAssignedProjects && <th>Assigned to Projects</th>} 
+        </thead>
+        <tbody>
+          
+        {actions.map((action:IActionModel) => (
+          <ActionRow action={action} showAssignedProjects={this.props.showAssignedProjects} />
+        ))}
+        </tbody>
+      </Table>
+    )
   }
 }
 

@@ -19,6 +19,5 @@ export default class ActionModel implements IActionModel {
       this.progressStatus = _progressStatus;
       this.ragStatus = _ragStatus;
       this.projects = _projects;
-
   }
 }

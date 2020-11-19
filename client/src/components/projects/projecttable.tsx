@@ -14,27 +14,27 @@ class ProjectTable extends React.Component<ProjectTableProps> {
     const projects = this.props.projects;
 
     return (
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Project Status</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-           
-          {projects.map((project:IProjectModel, index: number) => (
-            <ProjectRow
-              key={index} 
-              project={project} 
-              showActionsHandler={(id:number) => this.props.showActionsHandler(id)} 
-              addActionsHandler={(id:number) => this.props.addActionsHandler(id)} />
-          ))}
-          </tbody>
-        </Table>
-      )
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Project Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        {projects.map((project:IProjectModel, index: number) => (
+          <ProjectRow
+            key={index} 
+            project={project} 
+            showActionsHandler={(id:number) => this.props.showActionsHandler(id)} 
+            addActionsHandler={(id:number) => this.props.addActionsHandler(id)} />
+        ))}
+        </tbody>
+      </Table>
+    )
   }
 }
 

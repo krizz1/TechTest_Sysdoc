@@ -76,9 +76,8 @@ class Projects extends React.Component<IState> {
   showProjectActions = (projectId:number) => {
     this.setState({addActionData: new Array<IActionModel>()});
     let project:IProjectModel = this.getProject(projectId);
-    let actions:IActionModel[] = project != null ? project.actions : [];
-    this.setState({actionHeading: (project != null ? project.name : '')});
-    this.setState({actionData: actions});
+    this.setState({actionHeading: project.name});
+    this.setState({actionData: project.actions});
   }
 
   showAddProjectActions = (projectId:number) => {
@@ -88,7 +87,7 @@ class Projects extends React.Component<IState> {
     this.setState({editingProjectId: projectId});
 
     let project:IProjectModel = this.getProject(projectId);
-    this.setState({addActionHeading: (project != null ? project.name : '')});
+    this.setState({addActionHeading: project.name});
     this.LoadActions();
   }
 
@@ -111,11 +110,11 @@ class Projects extends React.Component<IState> {
     await RemoveActionFromProject(this.state.editingProjectId,actionId);
     await this.LoadActions();
     await this.loadProjectData();
-}
+  }
 
   render()
   {
-    const { isLoadingProjects, projectData, actionData, error, actionHeading, addActionData, addActionHeading, editingProjectId } = this.state;
+    const { isLoadingProjects, projectData, actionData, error, actionHeading, addActionData, addActionHeading, editingProjectId, isLoadingActions } = this.state;
     if (error) return "Error loading Projects";
 
     return (
@@ -143,7 +142,7 @@ class Projects extends React.Component<IState> {
         </Row>
         <Row>
           <Col>
-            {addActionData.length > 0 && (
+            {addActionData.length > 0 && !isLoadingActions && (
               <ManageProjectActionTable
                 actions={addActionData}
                 projectId={editingProjectId}
